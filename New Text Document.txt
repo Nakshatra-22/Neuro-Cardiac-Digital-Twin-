@@ -1,0 +1,33 @@
+import streamlit as st
+import matplotlib.pyplot as plt
+from ecg_processing import analyze_ecg
+
+st.set_page_config(page_title="NeuroCardiac Digital Twin", layout="wide")
+
+st.title("🧠❤️ Real-Time NeuroCardiac Digital Twin")
+st.markdown("### AI-Powered Heart-Brain Monitoring System")
+
+# Record selection
+record_name = st.selectbox("Select ECG Record", ["100"])
+
+# Analyze Button
+if st.button("Run Digital Twin Analysis"):
+
+    result = analyze_ecg(record_name)
+
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("Average Heart Rate (BPM)", result["Average_HR"])
+    col2.metric("RMSSD (HRV)", result["RMSSD"])
+    col3.metric("NeuroCardiac Status", result["Status"])
+
+    st.subheader("ECG Signal with R-Peaks")
+
+    fig, ax = plt.subplots(figsize=(10,4))
+    ax.plot(result["Signal"][:2000])
+    ax.plot(result["Peaks"][result["Peaks"] < 2000],
+            result["Signal"][result["Peaks"][result["Peaks"] < 2000]],
+            "ro")
+    st.pyplot(fig)
+
+    st.success("Digital Twin Analysis Complete")

@@ -62,7 +62,11 @@ record_name=st.selectbox("Select ECG Record",available)
 
 if st.button("Activate Digital Twin"):
 
-    result = analyze_ecg(record_name)
+    try:
+        result = analyze_ecg(record name)
+    except Exception as e:
+        st.error (f"ECG analysis failed for record {record_name}. Error: {e}")
+        st.stop ()
 
     # ---------------- CARDIAC METRICS ----------------
     st.subheader("🩺 Cardiac Metrics")
@@ -100,6 +104,19 @@ if st.button("Activate Digital Twin"):
         time.sleep(0.2)
 
     st.success("🧠 Digital Twin Fully Activated")
+
+    live_mode = st. checkbox "Enable live streaming", value=True)
+    if livemode:
+        fig, ax = pit. subplots(figsize=(10, 4))
+        placeholder = st. empty ()
+        for i in range(e, min(2000, len (result["Signal"])), 200) :
+            ax. clear()
+            ax.plot(result["Signal"][i: 1+200])
+            ax. set_ylim(-3, 3)
+            placeholder.pyplot(fig, clear_figure=False)
+            time.sleep (0.15)
+    else:
+        st. line_chart (result["Signal"][:2080])
 
     # ---------------- PDF DOWNLOAD ----------------
     if st.button("📄 Download AI Report as PDF"):

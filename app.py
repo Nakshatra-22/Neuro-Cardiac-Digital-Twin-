@@ -1,4 +1,5 @@
 import streamlit as st
+import glob
 import matplotlib.pyplot as plt
 import time
 from ecg_processing import analyze_ecg
@@ -56,7 +57,8 @@ div[data-testid="metric-container"] div {
 st.title("🧠❤️ NeuroCardiac AI Digital Twin")
 st.markdown("### Real-Time Brain–Heart Intelligence System")
 
-record_name = st.selectbox("Select ECG Record", ["100", "101", "102"])
+available=sorted({f.split(".")[0]for f in glob.glob(".hea")})
+record_name=st.selectbox("Select ECG Record",available)
 
 if st.button("Activate Digital Twin"):
 
